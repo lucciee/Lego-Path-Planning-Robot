@@ -35,7 +35,8 @@ class MyController:
         self.ultrasonic = UltrasonicSensor(Port.S4)
 
         # Parameters
-        self.speed = 360    # degrees/sec
+        self.speed = 500    # degrees/sec
+        self.MAX_SPEED =  1560
 
         # ===== Real robot measurements=======
         self.r = 0.0275         # wheel radius
@@ -202,19 +203,22 @@ class MyController:
 
             if (self.goal_count == 0):
                 self.rotate_to_goal()
-                self.speed = 360
+                self.speed = self.MAX_SPEED
                 self.run_tank(self.speed)
                 self.goal_count += 1
                 continue
 
             # execute goal 1: hit wall and reverse
-            elif (self.goal_count == 1 and (self.left_bumper.pressed() or self.right_bumper.pressed())):
-                self.stop_motors()
-                self.reverse()
-                self.goal_count += 1
-            elif(self.goal_count == 1 and self.d_goal_dist > 0): # if distance from goal is increasing, stop and rotate to goal
-                self.goal_count = 0
-                self.d_goal_dist = 0
+            elif (self.goal_count == 1 ):
+                if (self.left_bumper.pressed() or self.right_bumper.pressed()):
+                    self.stop_motors()
+                    self.reverse()
+                    self.goal_count += 1
+                if(self.d_goal_dist > 0): # if distance from goal is increasing, stop and rotate to goal
+                    self.goal_count = 0
+                    self.d_goal_dist = 0
+                if(self.goal_dist < 1):
+                    self.speed = max(self.MAX_SPEED * self.goal_dist /2 , 200)
 
             # execute goal 2: stop reversing and rotate 90 degrees
             elif (self.goal_count == 2 and math.sqrt((self.x - self.reverse_start_x)**2 + (self.y - self.reverse_start_y)**2) >= 0.15):
@@ -231,7 +235,7 @@ class MyController:
 
                 self.hit_point_goal_dist = self.compute_goal_dist()
 
-                self.speed = 250
+                self.speed = 400
                 self.goal_count += 1
                 self.run_tank(self.speed)
 
