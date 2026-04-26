@@ -308,10 +308,12 @@ class MyController:
 
         self.stop_motors() 
 
-        error = (90 - (-self.gyroscope.angle())) % 360
-        if error > 180:
-            error -= 360
-        self.rotate(-error)
+        while(abs(self.theta % 360 - 90) > 0.1):
+            error = (90 - (-self.gyroscope.angle())) % 360
+            if error > 180:
+                error -= 360
+            self.rotate(-error)
+            self.compute_position()
 
         self.ev3.speaker.beep(frequency=800, duration=400)
         print(self.goal_dist)
