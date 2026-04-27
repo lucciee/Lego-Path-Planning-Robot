@@ -80,7 +80,7 @@ class MyController:
         # Helper function for stopping motors
         self.left_motor.hold()
         self.right_motor.hold()
-        wait(1000)
+        wait(500)
 
     def compute_position(self):
         left_angle = self.left_motor.angle()
@@ -107,7 +107,7 @@ class MyController:
             self.x += d_center * math.cos((self.theta + new_theta) / 2.0)
             self.y += d_center * math.sin((self.theta + new_theta) / 2.0)
         else:
-            self.ev3.speaker.beep(frequency=800, duration=200)
+            self.ev3.speaker.beep(frequency=800, duration=100)
             
         # Update state for next iteration
         self.theta = new_theta
@@ -137,11 +137,13 @@ class MyController:
         self.right_motor.run_angle(150, -total_motor_degrees, wait=True)
 
     def rotate_to_goal(self):
-        target_theta = math.degrees(math.atan2(self.goal_y - self.y, self.goal_x - self.x))
-        error = (target_theta - (-self.gyroscope.angle())) % 360
-        if error > 180:
-            error -= 360
-        self.rotate(-error)
+        error = 1
+        while (abs(error) >= 0.5):
+            target_theta = math.degrees(math.atan2(self.goal_y - self.y, self.goal_x - self.x))
+            error = (target_theta - (-self.gyroscope.angle())) % 360
+            if error > 180:
+                error -= 360
+            self.rotate(-error)
 
     def reverse(self):
         self.right_angle = self.right_motor.angle()
@@ -174,14 +176,14 @@ class MyController:
 
     def run(self):
         self.gyroscope.reset_angle(-90)
-        print("x_pos,y_pos")
+        # print("x_pos,y_pos")
 
         #==================== Change to "while True:" when running on the real robot ============
         while True: 
             pressed_buttons = self.ev3.buttons.pressed()
 
             if Button.CENTER in pressed_buttons:
-                self.ev3.speaker.beep(frequency=500, duration=100)
+                self.ev3.speaker.play_file('Mario_lets_a_go.wav')
                 break
 
         while True:
@@ -190,13 +192,12 @@ class MyController:
            
             # update positioning
             self.compute_position()
-            # print("x" + str(self.x) + "  y" + str(self.y))
-            # print(self.goal_dist)
-            print("{},{}".format(self.x, self.y))
+            
+            # print("{},{}".format(self.x, self.y))
 
             if(self.goal_dist < 0.05):  # stop if within 5 cm of goal
                 self.stop_motors()
-                print(self.goal_dist)
+                # print(self.goal_dist)
                 self.ev3.speaker.beep(frequency=800, duration=400)
                 break
 
@@ -208,17 +209,18 @@ class MyController:
                 self.goal_count += 1
                 continue
 
-            # execute goal 1: hit wall and reverse
+            # execute goal 1: follow m-line until obstacle
             elif (self.goal_count == 1 ):
                 if (self.left_bumper.pressed() or self.right_bumper.pressed()):
                     self.stop_motors()
+                    self.ev3.speaker.play_file('Mario_mammamia.wav')
                     self.reverse()
                     self.goal_count += 1
-                if(self.d_goal_dist > 0): # if distance from goal is increasing, stop and rotate to goal
+                if(self.d_goal_dist > 0): # if distance from goal is increasing, stop and readjusts angle towards goal
                     self.goal_count = 0
                     self.d_goal_dist = 0
-                if(self.goal_dist < 1):
-                    self.speed = max(self.MAX_SPEED * self.goal_dist /2 , 200)
+                if(self.goal_dist < 0.5):
+                    self.run_tank(max(self.MAX_SPEED *self.goal_dist, 360))
 
             # execute goal 2: stop reversing and rotate 90 degrees
             elif (self.goal_count == 2 and math.sqrt((self.x - self.reverse_start_x)**2 + (self.y - self.reverse_start_y)**2) >= 0.15):
@@ -307,19 +309,20 @@ class MyController:
 
         while (self.d_goal_dist <=0): 
             self.compute_position()
-            print("{},{}".format(self.x, self.y))
-            print(self.d_goal_dist)
+            # print("{},{}".format(self.x, self.y))
+            # print(self.d_goal_dist)
 
         self.stop_motors() 
 
-        while(abs(self.theta % 360 - 90) > 0.1):
+        while(abs(math.degrees(self.theta) % 360 - 90) >= 0.5):
             error = (90 - (-self.gyroscope.angle())) % 360
             if error > 180:
                 error -= 360
             self.rotate(-error)
             self.compute_position()
 
-        self.ev3.speaker.beep(frequency=800, duration=400)
+        self.ev3.speaker.beep(frequency=800, duration=1000)
+        self.ev3.speaker.play_file('Mario_victory.wav')
         print(self.goal_dist)
 
                 
