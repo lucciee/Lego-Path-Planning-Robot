@@ -6,14 +6,6 @@ location to a known goal location in an unknown environment while avoiding stati
 
 https://github.com/user-attachments/assets/fe18f215-2e9f-430d-8077-a3a5ea92f958
 
-
-
-## Robot Design Constraints
-The robot is built only using components from a Lego Mindstorms kit. The robot is designed to traverse a 400 cm x 400 cm workspace autonomously
-without any human intervention. The workspace will include various unknown obstacles for the robot to circumnavigate as will as a target coordinate for the robot to reach. The robot is allowed to make contact with obstacles. Leaving the workspace is not permitted. 
-<img width="918" height="616" alt="Screenshot 2026-09-15 173317" src="https://github.com/user-attachments/assets/6dad19b8-2346-405e-9ebf-08861ae37054" />
-
-
 ## Robot features
   2 Front Rubber Wheels and motors     (steering and locomotion)  
   1 Rear Caster Wheel                  (support point for balance)  
@@ -23,6 +15,12 @@ without any human intervention. The workspace will include various unknown obsta
   Speakers                             (plays fanfare when goal is reached)  
 <img width="740" height="662" alt="Screenshot 2026-09-15 172429" src="https://github.com/user-attachments/assets/c4e7b2dd-cc53-4fee-8841-e32f34513a57" />
 <img width="724" height="668" alt="Screenshot 2026-09-15 172423" src="https://github.com/user-attachments/assets/e1b4400d-3b4c-450e-954a-5bfde370891a" />
+
+
+## Robot Design Constraints
+The robot is built only using components from a Lego Mindstorms kit. The robot is designed to traverse a 400 cm x 400 cm workspace autonomously
+without any human intervention. The workspace will include various unknown obstacles for the robot to circumnavigate as will as a target coordinate for the robot to reach. The robot is allowed to make contact with obstacles. Leaving the workspace is not permitted. 
+<img width="918" height="616" alt="Screenshot 2026-09-15 173317" src="https://github.com/user-attachments/assets/6dad19b8-2346-405e-9ebf-08861ae37054" />
 
 
 ## Path Planning Algorithm
