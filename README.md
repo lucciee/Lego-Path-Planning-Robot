@@ -4,6 +4,10 @@
 Assembling and programing a wheeled robot capable of moving as quickly as possible from a start
 location to a known goal location in an unknown environment while avoiding static obstacles.
 
+https://github.com/user-attachments/assets/fe18f215-2e9f-430d-8077-a3a5ea92f958
+
+
+
 ## Robot Design Constraints
 The robot is built only using components from a Lego Mindstorms kit. The robot is designed to traverse a 400 cm x 400 cm workspace autonomously
 without any human intervention. The workspace will include various unknown obstacles for the robot to circumnavigate as will as a target coordinate for the robot to reach. The robot is allowed to make contact with obstacles. Leaving the workspace is not permitted. 
