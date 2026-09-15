@@ -11,13 +11,22 @@ without any human intervention. The workspace will include various unknown obsta
 
 
 ## Robot features
-2 Front Rubber Wheels and motors     (steering and locomotion)
-1 Rear Caster Wheel                  (support point for balance)
-Gyroscope                            (dead reckoning)
-Ultrasonic Sensor                    (object detection)
-Speakers                             (plays fanfare when goal is reached)
+  2 Front Rubber Wheels and motors     (steering and locomotion)  
+  1 Rear Caster Wheel                  (support point for balance)  
+  Gyroscope                            (dead reckoning)  
+  2 Bumper Sensors                     (tactile object detection)  
+  Ultrasonic Sensor                    (distant object detection)  
+  Speakers                             (plays fanfare when goal is reached)  
 <img width="740" height="662" alt="Screenshot 2026-09-15 172429" src="https://github.com/user-attachments/assets/c4e7b2dd-cc53-4fee-8841-e32f34513a57" />
 <img width="724" height="668" alt="Screenshot 2026-09-15 172423" src="https://github.com/user-attachments/assets/e1b4400d-3b4c-450e-954a-5bfde370891a" />
+
+
+## Path Planning Algorithm
+The robot's path is determine using an algorithm based on the **Bug 2 Algorithm**, where an imaginary line called the **m-line** is drawn between the start and goal coordinates. The robot follows this m-line until it encounters an obstacle, at which point it records its location as an **hit point**. The robot then circumnavigates the obstacle's perimeter until it reencounters the m-line. This process is repeated until the goal is reached.
+
+Adjustments were made to the standard Bug 2 Algorithm to account for suboptimal and inaccurate sensor readings and motor functions. For example, the Ultrasonic sensor equipped on the robot appeared to give faulty reading, requiring the robot to rely more heavily on tactile feedback from the Bumper sensors. 
+
+<img width="641" height="477" alt="image" src="https://github.com/user-attachments/assets/b489ba53-6057-4aab-82a6-71de589d7504" />
 
 
 ### Uploading the code onto the Lego Mindstorms EV3
